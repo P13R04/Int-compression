@@ -55,3 +55,55 @@ Notes et suite possible
 - Améliorations possibles : encodage des entiers signés (zig-zag), tests JUnit, rapport PDF et scripts d'automation.
 
 Auteur: (ajoutez votre nom ici)
+
+Persisting input and compressed data
+-----------------------------------
+
+By default the benchmark keeps the original arrays and the compressed buffers only in memory. To save them for later inspection or reuse, you can store the integer arrays (both raw inputs and compressed buffers) as a compact binary file.
+
+Recommended layout (binary int32, big-endian as produced by Java DataOutputStream):
+- file = [int count][int v0][int v1]...[int v(count-1)]
+
+Quick Java helper (example API) you can add to your project as `DataIO.java`:
+
+```java
+import java.io.*;
+
+public final class DataIO {
+  private DataIO() {}
+
+  public static void saveIntArray(File out, int[] arr) throws IOException {
+    try (DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(out)))) {
+      dos.writeInt(arr.length);
+      for (int v : arr) dos.writeInt(v);
+    }
+  }
+
+  public static int[] loadIntArray(File in) throws IOException {
+    try (DataInputStream dis = new DataInputStream(new BufferedInputStream(new FileInputStream(in)))) {
+      int n = dis.readInt();
+      int[] arr = new int[n];
+      for (int i = 0; i < n; i++) arr[i] = dis.readInt();
+      return arr;
+    }
+  }
+}
+```
+
+Usage examples (PowerShell)
+
+```powershell
+# create a folder for persisted data
+mkdir data
+
+# run a small demo that writes input and compressed output (adjust paths if you add DataIO usage to demo)
+# java -cp target/classes demo.Main  # if modified to save files
+
+# Example (after adding DataIO calls in a small helper):
+# java -cp target/classes demo.SaveExample data/input-200k.bin data/comp-overflow.bin
+```
+
+Notes
+- Files saved in `data/` are ignored by the repository (see `.gitignore`).
+- The binary int format is compact and fast to read/write from Java; if you need human-readable files, export CSV instead.
+- If you want, I can add `DataIO.java` and a small `demo/SaveExample.java` program that runs the benchmark, saves the input and each compressed buffer under `data/`, and verifies roundtrip on load.
