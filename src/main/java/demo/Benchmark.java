@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.Locale;
 
 /**
- * Petit programme de bench pour mesurer compression/décompression des trois variantes.
+ * Petit programme de benchmark pour mesurer compression/décompression des trois variantes.
  * Utilisation: via Maven Wrapper (voir README) ou en lançant la classe avec un argument [n].
  */
 public class Benchmark {
@@ -32,7 +32,7 @@ public class Benchmark {
         System.out.println("--- " + type + " ---");
         IntCompressor c = CompressorFactory.create(type, opts);
 
-    // Échauffement du JIT
+    // warmup JIT (échauffement)
         for (int i = 0; i < 3; i++) {
             int[] comp = c.compress(data);
             int[] out = new int[data.length];

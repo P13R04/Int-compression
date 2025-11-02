@@ -72,7 +72,7 @@ Démo interactive (non‑interactif, exemple automatique)
 printf "random 100\n\n\n" | ./mvnw -q -DskipTests=true compile exec:java@main
 ```
 
-Bench depuis données générées
+Benchmark depuis données générées
 
 ```bash
 # macOS/Linux
@@ -84,7 +84,7 @@ Bench depuis données générées
 ./mvnw.cmd -q -DskipTests=true compile exec:java@benchcli -Dexec.args="--n 100000 --runs 5"
 ```
 
-Bench depuis un fichier texte rapide
+Benchmark depuis un fichier texte rapide
 
 ```bash
 # macOS/Linux
@@ -118,7 +118,7 @@ Notes
 - Les artefacts de build sont sous `target/`.
 - Le projet compile avec `--release 21` (voir `pom.xml`). Utiliser JDK 21.
 
-Bench depuis des fichiers (CSV/TXT/BIN)
+Benchmark depuis des fichiers (CSV/TXT/BIN)
 ------------------------------------
 
 Utilisez `demo.BenchCLI` pour lancer des benchmarks avec des jeux de données fournis par fichier.
@@ -157,8 +157,8 @@ Légende
 
 Fichiers clés
 - `src/main/java/demo/Main.java` : démo interactive des trois variantes.
-- `src/main/java/demo/Benchmark.java` : micro‑bench simple par variante.
-- `src/main/java/demo/BenchCLI.java` : CLI de bench à partir de fichiers (tableau ASCII + CSV).
+- `src/main/java/demo/Benchmark.java` : micro‑benchmark simple par variante.
+- `src/main/java/demo/BenchCLI.java` : CLI de benchmark à partir de fichiers (tableau ASCII + CSV).
 - `src/main/java/io/compress/intpack/` : implémentations et utilitaires (BitIO, Headers, BitPacking*).
 
 Guide de lecture du code
@@ -180,7 +180,7 @@ Guide de lecture du code
 
 - Démos/CLI et tests
   - `demo/Main.java` : interface interactive pour essayer rapidement les variantes (saisie, `get(i)`, timings).
-  - `demo/BenchCLI.java` : bench reproductible depuis fichiers (TXT/CSV/BIN) avec médiane/IQR, ASCII + CSV.
+  - `demo/BenchCLI.java` : benchmark reproductible depuis fichiers (TXT/CSV/BIN) avec médiane/IQR, ASCII + CSV.
   - `demo/Benchmark.java` : micro‑bench minimal par variante.
   - `demo/SaveExample.java` : round‑trip de sauvegarde/lecture sur disque (format `DataIO`).
   - `src/test/java/demo` : tests JUnit et un runner autonome `TestSuite.java`.
