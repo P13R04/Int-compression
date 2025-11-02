@@ -30,7 +30,7 @@ Exécution en une commande (multi‑plateforme via Maven Wrapper) :
 À quoi s’attendre :
 - Saisie soit de `random N` (ex. `random 20000`), soit d’entiers séparés par des espaces.
 - Saisie d’un index `i` pour valider l’accès aléatoire via `get(i)`.
-- Un récapitulatif par variante : ok/words/count et temps de compression/décompression.
+- Un récapitulatif par variante : tailles (base_words, words, ratio, k_eff) et temps (comp_med/decomp_med et IQR).
 - “Press Enter to exit …” en fin d’exécution.
 
 Notes
@@ -63,10 +63,17 @@ Exécution en une commande (compile auto) :
 ./mvnw[.cmd] -q -DskipTests=true compile exec:java@benchcli -Dexec.args="--file data/input.bin --runs 9"
 ```
 
-Colonnes de sortie :
+Colonnes de sortie (ASCII et CSV) :
+- `base_words` : nombre d'entiers de l'entrée (n)
 - `words` : nombre de mots 32 bits dans le buffer compressé
+- `ratio` : words / base_words (plus c'est petit, mieux c'est)
+- `k_eff` : 32 × ratio (bits utiles par valeur après en‑tête)
 - `comp_med(ms)` / `decomp_med(ms)` : médianes des latences sur les runs
-- `comp_IQR` / `decomp_IQR` : étendue interquartile (Q3‑Q1)
+- `comp_IQR` / `decomp_IQR` : étendue interquartile (Q3−Q1), en ms
+
+Légende
+- Les colonnes `ratio` et `k_eff` mesurent la compacité; les colonnes `*_med` et `*_IQR` mesurent le temps.
+- L’IQR est robuste au bruit (latences système, JIT) et complète la médiane.
 
 Fichiers clés
 - `src/main/java/demo/Main.java` : démo interactive des trois variantes.

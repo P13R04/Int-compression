@@ -2,6 +2,7 @@ package demo;
 
 import io.compress.intpack.*;
 import java.util.Random;
+import java.util.Locale;
 
 /**
  * Petit programme de bench pour mesurer compress/decompress des trois variantes.
@@ -51,8 +52,13 @@ public class Benchmark {
         long t3 = System.nanoTime();
         long decompressNs = t3 - t2;
 
-        System.out.printf("compressed words=%d, compress=%.3f ms, decompress=%.3f ms\n",
-                comp.length, compressNs / 1e6, decompressNs / 1e6);
+    int baseWords = data.length;
+    double ratio = (double) comp.length / baseWords;
+    double kEff = 32.0 * comp.length / baseWords;
+    System.out.printf(
+        Locale.ROOT,
+        "base_words=%d, compressed words=%d, ratio=%.3f, k_eff(bits/val)=%.3f, compress=%.3f ms, decompress=%.3f ms\n",
+        baseWords, comp.length, ratio, kEff, compressNs / 1e6, decompressNs / 1e6);
 
         // quick verification
         boolean ok = java.util.Arrays.equals(data, out);
