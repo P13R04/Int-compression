@@ -276,7 +276,7 @@ Ce dépôt inclut `.vscode/settings.json` avec :
 2) Clean Java workspace : Command Palette → “Java: Clean Java Language Server Workspace” (accepter le redémarrage).
 3) Vérifier JDK 21 : Command Palette → “Java: Configure Runtime” → sélectionner JDK 21 pour l’espace de travail.
 4) Recharger les projets Maven (Explorateur → panneau Maven → “Reload Projects”).
-5) S’assurer que le Maven Wrapper est utilisé sous Windows : la clé `maven.executable.path` pointe vers `${workspaceFolder}/mvnw.cmd`.
+5) Sous Windows, si besoin, vous pouvez définir `maven.executable.path` vers `${workspaceFolder}/mvnw.cmd` dans vos paramètres utilisateur VS Code.
 
 Après ces étapes, le soulignement rouge sur `package demo;` doit disparaître. Les builds/tests Maven restent la source de vérité.
 

@@ -60,7 +60,7 @@ public class TestSuiteTest {
         int[] comp = c.compress(data);
         int[] out = new int[data.length];
         c.decompress(comp, out);
-        assertArrayEquals(data, out, "roundtrip failed for " + type);
+    assertArrayEquals(data, out, "roundtrip en échec pour " + type);
         if (data.length > 0) {
             int idx = Math.min(10, data.length - 1);
             assertEquals(data[idx], c.get(comp, idx));

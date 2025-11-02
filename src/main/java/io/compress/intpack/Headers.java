@@ -30,7 +30,7 @@ out[4] = extraB;
 
 static int checkMagic(int[] in) {
 if (in == null || in.length < HEADER_WORDS || in[0] != MAGIC)
-throw new IllegalArgumentException("Invalid compressed buffer or magic");
+throw new IllegalArgumentException("Buffer compressé invalide (magic)");
 return HEADER_WORDS;
 }
 
