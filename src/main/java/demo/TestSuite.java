@@ -4,6 +4,11 @@ import io.compress.intpack.*;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * Mini test runner autonome (sans JUnit) pour valider les trois variantes
+ * sur des cas déterministes, aléatoires et des valeurs négatives (OVERFLOW).
+ * L'objectif est d'avoir un feedback rapide en dehors de l'environnement de test.
+ */
 public class TestSuite {
     public static void main(String[] args) {
         int failures = 0;

@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Small helper to read/write integer arrays and compressed buffers.
+ * Petit utilitaire pour lire/écrire des tableaux d'int et des buffers compressés.
  *
- * Binary formats (Java Data{In|Out}putStream, big-endian):
- * - plain int array file: [int count][int v0]...[int v(count-1)]
- * - compressed file: [int compressorOrdinal][int origLength][int compLength][int c0]...[int cN]
+ * Formats binaires (Java Data{In|Out}putStream, big‑endian):
+ * - tableau d'int "plain": [int count][int v0]...[int v(count-1)]
+ * - fichier compressé: [int compressorOrdinal][int origLength][int compLength][int c0]...[int cN]
  */
 public final class DataIO {
     private DataIO() {}

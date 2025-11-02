@@ -4,9 +4,9 @@ import io.compress.intpack.*;
 import java.io.File;
 
 /**
- * Simple CLI to compress/decompress integer arrays stored on disk.
+ * CLI simple pour compresser/décompresser des tableaux d'entiers stockés sur disque.
  *
- * Usage:
+ * Usage (commandes conservées en anglais):
  *  java -cp target/classes demo.SaveExample compress <in-file> <out-file> [CROSSING|NO_CROSSING|OVERFLOW]
  *  java -cp target/classes demo.SaveExample decompress <in-file> <out-file>
  *  java -cp target/classes demo.SaveExample roundtrip <in-file> <out-dir> [CROSSING|...]

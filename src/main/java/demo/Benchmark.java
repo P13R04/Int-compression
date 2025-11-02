@@ -4,7 +4,7 @@ import io.compress.intpack.*;
 import java.util.Random;
 
 /**
- * Simple benchmark driver to measure compress/decompress for the three types.
+ * Petit programme de bench pour mesurer compress/decompress des trois variantes.
  * Usage: run with java -cp out demo.Benchmark [n]
  */
 public class Benchmark {

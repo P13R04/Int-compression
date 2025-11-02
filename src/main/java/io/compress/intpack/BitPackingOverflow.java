@@ -5,8 +5,12 @@ import java.util.List;
 
 
 /**
- * Bit-packing variant with overflow area.
- * Simple heuristic: pick kSmall (1..32) that minimizes total bits = n*(1+payloadBits)+m*32
+ * Variante OVERFLOW avec zone d'overflow.
+ * Idée: choisir kSmall (1..32) qui minimise le total de bits
+ *   total = n * (1 + payloadBits) + m * 32
+ * où n = nombre d'éléments, m = nombre d'éléments envoyés en overflow,
+ * flag = 1 bit par valeur (local/overflow), payload = soit la valeur (locale)
+ * soit l'index dans la zone overflow. La zone overflow est stockée en words bruts.
  */
 final class BitPackingOverflow extends BitPackingBase {
 
@@ -15,7 +19,7 @@ final class BitPackingOverflow extends BitPackingBase {
     private static final class Plan {
         int kSmall;
         int payloadBits;
-        int[] mapIndex; // -1 => local (value in payload), >=0 => index in overflowVals
+        int[] mapIndex; // -1 => local (value dans payload), >=0 => index dans overflowVals
         List<Integer> overflowVals = new ArrayList<>();
     }
 
@@ -24,11 +28,11 @@ final class BitPackingOverflow extends BitPackingBase {
         Plan best = null;
         long bestBits = Long.MAX_VALUE;
 
-        // Try candidate small bit widths
+        // Essaye plusieurs k candidats et conserve celui qui minimise total bits
         for (int k = 1; k <= 32; k++) {
             int m = 0;
             for (int v : src) {
-                if (v < 0 || v >= (1L << k)) m++; // negatives forced to overflow
+                if (v < 0 || v >= (1L << k)) m++; // négatifs → overflow obligatoire
             }
             int bitsIdx = ceilLog2(Math.max(1, m));
             int payloadBits = Math.max(k, bitsIdx);
@@ -43,7 +47,7 @@ final class BitPackingOverflow extends BitPackingBase {
             }
         }
 
-        // Build mapping using chosen kSmall
+        // Construit le mapping selon kSmall choisi
         Plan p = best;
         p.mapIndex = new int[n];
         for (int i = 0; i < n; i++) {
@@ -65,13 +69,13 @@ final class BitPackingOverflow extends BitPackingBase {
         final int n = src.length;
         final Plan p = plan(src);
         final int m = p.overflowVals.size();
-        final int dataBits = n * (1 + p.payloadBits); // 1 flag + payload
-        final int overflowBits = m * 32; // simple raw overflow words
+    final int dataBits = n * (1 + p.payloadBits); // 1 flag + payload
+    final int overflowBits = m * 32; // words d'overflow bruts
 
         int[] out = allocWithHeader(Headers.HEADER_WORDS, dataBits + overflowBits);
     Headers.write(out, n, CompressionType.OVERFLOW, p.kSmall, 0, p.payloadBits, m);
 
-        // write main bitstream
+        // Écrit le flux principal (flag + payload)
         final int base = Headers.HEADER_WORDS;
         int bitPos = 0;
         for (int i = 0; i < n; i++) {
@@ -86,7 +90,7 @@ final class BitPackingOverflow extends BitPackingBase {
             bitPos += 1 + p.payloadBits;
         }
 
-        // Append overflow area aligned to next word
+        // Ajoute la zone overflow alignée sur le prochain word
         int overflowBaseBits = (base << 5) + dataBits;
         int overflowBaseWord = (overflowBaseBits + 31) >>> 5;
         for (int i = 0; i < m; i++) {

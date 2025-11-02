@@ -2,8 +2,10 @@ package io.compress.intpack;
 
 
 /**
-* Empaquetage autorisant le chevauchement : indexation par position bit i*k.
-*/
+ * Variante CROSSING : les valeurs peuvent chevaucher deux words.
+ * Indexation directe par la position bit i*k (LSB-first), ce qui permet
+ * compress/decompress/get en O(1) pour l'accès.
+ */
 final class BitPackingCrossing extends BitPackingBase {
 
 

@@ -3,18 +3,24 @@ package io.compress.intpack;
 import java.util.Objects;
 
 /**
- * Low-level bit IO helpers for int[] buffers.
- * Convention: LSB-first inside each 32-bit word (bit 0 = LSB of word 0).
+ * Utilitaires bas niveau de bit I/O pour des buffers int[].
+ * Convention: LSB-first à l'intérieur de chaque word 32 bits (bit 0 = LSB du word 0).
+ *
+ * Rappel vocabulaire (conservé en anglais):
+ * - word: entier 32 bits du tableau
+ * - LSB-first: l'ordre des bits est orienté depuis le LSB
  */
 final class BitIO {
     private BitIO() {}
 
     private static int mask(int bits) {
+        // Retourne un masque de 'bits' bits à 1 (cas particulier = 32)
         return (bits == 32) ? -1 : ((1 << bits) - 1);
     }
 
     /**
-     * Read up to 32 bits starting at bitPos (0 = LSB of word 0), LSB-first.
+     * Lecture (LSB-first) d'au plus 32 bits à partir de bitPos (0 = LSB du word 0).
+     * Peut chevaucher 2 words consécutifs si (offset+bitLen) > 32.
      */
     static int readBitsLSB(int[] words, int bitPos, int bitLen) {
         Objects.requireNonNull(words);
@@ -24,14 +30,15 @@ final class BitIO {
         int v = words[w] >>> o;
         int left = o + bitLen;
         if (left > 32) {
-            // bring the high part (may be negative if signed) and shift
+            // Récupère la partie haute provenant du word suivant
             v |= (words[w + 1] << (32 - o));
         }
         return (bitLen == 32) ? v : (v & mask(bitLen));
     }
 
     /**
-     * Write up to 32 bits starting at bitPos (0 = LSB of word 0), LSB-first.
+     * Écriture (LSB-first) d'au plus 32 bits à partir de bitPos (0 = LSB du word 0).
+     * Peut écrire sur 2 words si nécessaire.
      */
     static void writeBitsLSB(int[] words, int bitPos, int bitLen, int value) {
         if (bitLen == 0) return;
@@ -39,7 +46,7 @@ final class BitIO {
         int o = bitPos & 31;
         int m = mask(bitLen);
         int v = value & m;
-        // low part into words[w]
+        // Écrit la partie basse dans words[w]
         words[w] = (words[w] & ~(m << o)) | (v << o);
         int left = o + bitLen;
         if (left > 32) {
@@ -50,7 +57,7 @@ final class BitIO {
         }
     }
 
-    // Helpers for NO_CROSSING: operations that fit within a single word.
+    // Helpers pour NO_CROSSING: opérations confinées à un seul word.
     static int readBitsInWordLSB(int word, int offset, int bitLen) {
         int m = mask(bitLen);
         return (word >>> offset) & m;
@@ -62,7 +69,7 @@ final class BitIO {
         return (word & ~(m << offset)) | (v << offset);
     }
 
-    // Optional: MSB-oriented helpers using coordinate conversion
+    // Optionnel: helpers orientés MSB via conversion de coordonnées
     static int readBitsMSB(int[] words, int bitPos, int bitLen) {
         if (bitLen == 0) return 0;
         int w = bitPos >>> 5;

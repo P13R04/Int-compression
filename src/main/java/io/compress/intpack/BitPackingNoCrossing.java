@@ -1,6 +1,10 @@
 package io.compress.intpack;
 
 
+/**
+ * Variante NO_CROSSING : chaque valeur tient entièrement dans un word.
+ * On packe per = floor(32/k) valeurs par word sans chevauchement.
+ */
 final class BitPackingNoCrossing extends BitPackingBase {
 BitPackingNoCrossing(CompressorFactory.Options opts) { super(opts); }
 
