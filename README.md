@@ -1,5 +1,7 @@
 # Projet BitPacking
 
+Auteur : Pierre CONSTANTIN, numéro étudiant 22116789
+
 Ce projet implémente plusieurs compresseurs d'entiers par bit‑packing (crossing, no‑crossing, overflow).
 
 Build & tests (Windows PowerShell)
@@ -25,7 +27,7 @@ chmod +x ./mvnw
 Exécuter la démo interactive (demo.Main)
 ------------------------------------
 
-`demo.Main` est une petite interface interactive qui affiche une bannière d’auteur (Pierre CONSTANTIN), permet de choisir un tableau d’entrée, exécute toutes les variantes de compresseur, affiche les vérifications de round‑trip et un exemple de `get(i)`, puis attend Entrée avant de quitter.
+`demo.Main` est une petite interface interactive qui permet de choisir un tableau d’entrée, exécute toutes les variantes de compresseur, affiche les vérifications de round‑trip et un exemple de `get(i)`, puis attend Entrée avant de quitter.
 
 Exécution en une commande (multi‑plateforme via Maven Wrapper) :
 
