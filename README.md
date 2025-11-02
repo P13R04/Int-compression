@@ -12,6 +12,16 @@ $env:JAVA_HOME = 'C:\Program Files\Java\jdk-21'
 & "$PWD\mvnw.cmd" -DskipTests=false clean test
 ```
 
+Build & tests (macOS/Linux)
+
+```bash
+# If this repo was created on Windows, you may need to mark the wrapper as executable once:
+chmod +x ./mvnw
+
+# Build and run tests
+./mvnw -DskipTests=false clean test
+```
+
 Exécuter la démo interactive (demo.Main)
 ------------------------------------
 
@@ -199,3 +209,68 @@ Ce dépôt inclut `.vscode/settings.json` avec :
 5) S’assurer que le Maven Wrapper est utilisé sous Windows : la clé `maven.executable.path` pointe vers `${workspaceFolder}/mvnw.cmd`.
 
 Après ces étapes, le soulignement rouge sur `package demo;` doit disparaître. Les builds/tests Maven restent la source de vérité.
+
+Notes macOS/JDK récents
+-----------------------
+
+- Si vous voyez des avertissements concernant des appels natifs restreints (jansi/hawtjni) lors de l'exécution de Maven avec un JDK très récent (21+), ils sont bénins. Optionnellement, vous pouvez les masquer en exportant:
+
+```bash
+export MAVEN_OPTS="--enable-native-access=ALL-UNNAMED"
+```
+
+- Si le script `mvnw` affiche `permission denied`, exécutez `chmod +x ./mvnw` une fois (voir ci-dessus).
+
+DéPannage Windows (sans dépendances préinstallées)
+-------------------------------------------------
+
+- Installer un JDK 21 (x64). Vérifiez ensuite:
+
+```powershell
+java -version
+# si nécessaire pour la session courante
+$env:JAVA_HOME = 'C:\Program Files\Java\jdk-21'
+$env:Path = "$env:JAVA_HOME\bin;$env:Path"
+```
+
+- Utiliser le Maven Wrapper Windows (`mvnw.cmd`). Ne pas utiliser `mvnw` (Unix):
+
+```powershell
+# depuis PowerShell (gère les chemins avec espaces)
+& "$PWD\mvnw.cmd" -DskipTests=false clean test
+
+# alternative équivalente
+./mvnw.cmd -DskipTests=false clean test
+```
+
+- Quoting des arguments pour les exécutions: les exemples donnés fonctionnent sous PowerShell et CMD.
+
+- Encodage console (facultatif): si les accents (é/è/à) s'affichent mal, basculez en UTF-8:
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+chcp 65001 | Out-Null
+```
+
+- Premier lancement: le wrapper télécharge Maven automatiquement dans `~\.m2\wrapper`. Si vous êtes derrière un proxy, configurez-le dans `~/.m2/settings.xml`:
+
+```xml
+<settings>
+  <proxies>
+    <proxy>
+      <id>corp</id>
+      <active>true</active>
+      <protocol>http</protocol>
+      <host>proxy.example.com</host>
+      <port>8080</port>
+      <!-- optional: username/password, nonProxyHosts -->
+    </proxy>
+  </proxies>
+</settings>
+```
+
+- Avertissements JDK récents (jansi/hawtjni) lors de l'exécution de Maven: bénin. Pour les masquer dans PowerShell:
+
+```powershell
+$env:MAVEN_OPTS = '--enable-native-access=ALL-UNNAMED'
+```
