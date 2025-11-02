@@ -103,6 +103,10 @@ public class Main {
 			Method mCompress = c.getClass().getMethod("compress", int[].class);
 			Method mDecompress = c.getClass().getMethod("decompress", int[].class, int[].class);
 			Method mGet = c.getClass().getMethod("get", int[].class, int.class);
+			// Permettre l'accès même si la classe d'implémentation est package-private (Java 9+)
+			mCompress.setAccessible(true);
+			mDecompress.setAccessible(true);
+			mGet.setAccessible(true);
 
 			long t0 = System.nanoTime();
 			int[] comp = (int[]) mCompress.invoke(c, (Object) data);
