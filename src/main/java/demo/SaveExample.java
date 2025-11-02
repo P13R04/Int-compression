@@ -4,17 +4,17 @@ import io.compress.intpack.*;
 import java.io.File;
 
 /**
- * CLI simple pour compresser/décompresser des tableaux d'entiers stockés sur disque.
+ * CLI simple pour compresser/décompresser des tableaux d'entiers sur disque.
  *
- * Usage (commandes conservées en anglais):
- *  java -cp target/classes demo.SaveExample compress <in-file> <out-file> [CROSSING|NO_CROSSING|OVERFLOW]
- *  java -cp target/classes demo.SaveExample decompress <in-file> <out-file>
- *  java -cp target/classes demo.SaveExample roundtrip <in-file> <out-dir> [CROSSING|...]
+ * Utilisation:
+ *  java -cp target/classes demo.SaveExample compress <fichier-entree> <fichier-sortie> [CROSSING|NO_CROSSING|OVERFLOW]
+ *  java -cp target/classes demo.SaveExample decompress <fichier-entree> <fichier-sortie>
+ *  java -cp target/classes demo.SaveExample roundtrip <fichier-entree> <dossier-sortie> [CROSSING|...]
  */
 public class SaveExample {
     public static void main(String[] args) throws Exception {
         if (args.length < 3) {
-            System.out.println("Usage: compress|decompress|roundtrip ...");
+            System.out.println("Utilisation: compress|decompress|roundtrip ...");
             return;
         }
 
@@ -56,7 +56,7 @@ public class SaveExample {
             DataIO.saveIntArray(origFile, data);
             System.out.println("Saved orig -> " + origFile.getAbsolutePath() + ", comp -> " + compFile.getAbsolutePath());
 
-            // verify
+            // Vérification
             DataIO.Compressed read = DataIO.loadCompressed(compFile);
             IntCompressor c2 = CompressorFactory.create(CompressionType.values()[read.compressorOrdinal], new CompressorFactory.Options());
             int[] outArr = new int[read.origLength];

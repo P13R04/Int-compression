@@ -1,6 +1,6 @@
 # Projet BitPacking
 
-Ce projet implémente plusieurs compresseurs d'entiers par bit‑packing (crossing, no‑crossing, overflow).
+Compression d'entiers par bit‑packing avec accès direct aux valeurs (CROSSING, NO_CROSSING, OVERFLOW). Le projet se construit et s'exécute avec le Maven Wrapper et un JDK 21, sans autre dépendance.
 
 Build & tests (Windows PowerShell)
 
@@ -23,7 +23,7 @@ chmod +x ./mvnw
 ```
 
 Exécuter la démo interactive (demo.Main)
-------------------------------------
+-------------------------------------
 
 `demo.Main` est une petite interface interactive qui affiche une bannière d’auteur (Pierre CONSTANTIN), permet de choisir un tableau d’entrée, exécute toutes les variantes de compresseur, affiche les vérifications de round‑trip et un exemple de `get(i)`, puis attend Entrée avant de quitter.
 
@@ -38,10 +38,9 @@ Exécution en une commande (multi‑plateforme via Maven Wrapper) :
 ```
 
 À quoi s’attendre :
-- Saisie soit de `random N` (ex. `random 20000`), soit d’entiers séparés par des espaces.
-- Saisie d’un index `i` pour valider l’accès aléatoire via `get(i)`.
-- Un récapitulatif par variante : tailles (base_words, words, ratio, k_eff) et temps (comp_med/decomp_med et IQR).
-- “Press Enter to exit …” en fin d’exécution.
+- Entrer `random N` (ex. `random 20000`) ou une liste d’entiers séparés par des espaces.
+- Entrer un index `i` pour tester `get(i)` (accès direct).
+- Résumé par variante: tailles (base_words, words, ratio, k_eff) et temps (médiane + IQR).
 
 Notes
 - Les sources sont dans `src/main/java` et les tests dans `src/test/java` (standard Maven).
@@ -92,7 +91,7 @@ Fichiers clés
 - `src/main/java/io/compress/intpack/` : implémentations et utilitaires (BitIO, Headers, BitPacking*).
 
 Guide de lecture du code
-------------------------
+-------------------------
 
 - Vue d’ensemble (API et contrat)
   - `io/compress/intpack/IntCompressor.java` : contrat minimal commun (`compress`, `decompress`, `get`).
@@ -105,7 +104,7 @@ Guide de lecture du code
   - `BitPackingOverflow.java` : flag + payload + zone overflow; choisit un `kSmall` qui minimise les bits totaux.
 
 - I/O et utilitaires bas niveau
-  - `BitIO.java` : lecture/écriture de plages de bits LSB‑first (et helpers in‑word / MSB facultatifs).
+  - `BitIO.java` : primitives de lecture/écriture de bits (LSB‑first).
   - `DataIO.java` : lecture/écriture de tableaux d’int et buffers compressés (formats binaires simples).
 
 - Démos/CLI et tests

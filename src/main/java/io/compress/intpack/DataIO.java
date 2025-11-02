@@ -8,7 +8,7 @@ import java.util.List;
  * Petit utilitaire pour lire/écrire des tableaux d'int et des buffers compressés.
  *
  * Formats binaires (Java Data{In|Out}putStream, big‑endian):
- * - tableau d'int "plain": [int count][int v0]...[int v(count-1)]
+ * - tableau d'int brut: [int count][int v0]...[int v(count-1)]
  * - fichier compressé: [int compressorOrdinal][int origLength][int compLength][int c0]...[int cN]
  */
 public final class DataIO {

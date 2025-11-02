@@ -50,9 +50,9 @@ public final class BenchCLI {
             rows.add(r);
         }
 
-        // Légende pour clarifier les métriques affichées
-        String legend = "Legend: base_words = n (taille originale), words = compressed 32-bit ints, "
-                + "ratio = words/base_words, k_eff(bits/val) = 32*words/base_words, IQR = Q3−Q1 (ms)";
+    // Légende (descriptions en français ; les noms de colonnes restent tels quels)
+    String legend = "Légende: base_words = n (taille originale), words = mots 32 bits compressés, "
+        + "ratio = words/base_words, k_eff(bits/val) = 32*words/base_words, IQR = Q3−Q1 (ms)";
         System.out.println(legend);
         printAsciiTable(rows, System.out);
         if (csvOut != null) writeCsv(rows, Path.of(csvOut));

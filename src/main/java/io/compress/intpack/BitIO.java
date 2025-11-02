@@ -3,12 +3,8 @@ package io.compress.intpack;
 import java.util.Objects;
 
 /**
- * Utilitaires bas niveau de bit I/O pour des buffers int[].
- * Convention: LSB-first à l'intérieur de chaque word 32 bits (bit 0 = LSB du word 0).
- *
- * Rappel vocabulaire (conservé en anglais):
- * - word: entier 32 bits du tableau
- * - LSB-first: l'ordre des bits est orienté depuis le LSB
+ * Utilitaires bas niveau de lecture/écriture de bits sur des buffers int[].
+ * Convention: LSB-first dans chaque entier 32 bits (bit 0 = LSB du mot 0).
  */
 final class BitIO {
     private BitIO() {}
@@ -19,8 +15,8 @@ final class BitIO {
     }
 
     /**
-     * Lecture (LSB-first) d'au plus 32 bits à partir de bitPos (0 = LSB du word 0).
-     * Peut chevaucher 2 words consécutifs si (offset+bitLen) > 32.
+     * Lecture (LSB-first) d'au plus 32 bits à partir de bitPos (0 = LSB du mot 0).
+     * Peut chevaucher 2 entiers consécutifs si (offset+bitLen) > 32.
      */
     static int readBitsLSB(int[] words, int bitPos, int bitLen) {
         Objects.requireNonNull(words);
@@ -37,8 +33,8 @@ final class BitIO {
     }
 
     /**
-     * Écriture (LSB-first) d'au plus 32 bits à partir de bitPos (0 = LSB du word 0).
-     * Peut écrire sur 2 words si nécessaire.
+     * Écriture (LSB-first) d'au plus 32 bits à partir de bitPos (0 = LSB du mot 0).
+     * Peut écrire sur 2 entiers si nécessaire.
      */
     static void writeBitsLSB(int[] words, int bitPos, int bitLen, int value) {
         if (bitLen == 0) return;
@@ -57,7 +53,7 @@ final class BitIO {
         }
     }
 
-    // Helpers pour NO_CROSSING: opérations confinées à un seul word.
+    // Helpers pour NO_CROSSING: opérations confinées à un seul entier.
     static int readBitsInWordLSB(int word, int offset, int bitLen) {
         int m = mask(bitLen);
         return (word >>> offset) & m;

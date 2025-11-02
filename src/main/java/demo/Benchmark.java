@@ -5,8 +5,8 @@ import java.util.Random;
 import java.util.Locale;
 
 /**
- * Petit programme de bench pour mesurer compress/decompress des trois variantes.
- * Usage: run with java -cp out demo.Benchmark [n]
+ * Petit programme de bench pour mesurer compression/décompression des trois variantes.
+ * Utilisation: via Maven Wrapper (voir README) ou en lançant la classe avec un argument [n].
  */
 public class Benchmark {
     public static void main(String[] args) {
@@ -32,7 +32,7 @@ public class Benchmark {
         System.out.println("--- " + type + " ---");
         IntCompressor c = CompressorFactory.create(type, opts);
 
-        // warmup
+    // Échauffement du JIT
         for (int i = 0; i < 3; i++) {
             int[] comp = c.compress(data);
             int[] out = new int[data.length];
@@ -60,7 +60,7 @@ public class Benchmark {
         "base_words=%d, compressed words=%d, ratio=%.3f, k_eff(bits/val)=%.3f, compress=%.3f ms, decompress=%.3f ms\n",
         baseWords, comp.length, ratio, kEff, compressNs / 1e6, decompressNs / 1e6);
 
-        // quick verification
+    // Vérification rapide
         boolean ok = java.util.Arrays.equals(data, out);
         System.out.println("roundtrip ok=" + ok);
     }
