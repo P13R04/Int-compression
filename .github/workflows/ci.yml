@@ -17,5 +17,8 @@ jobs:
           distribution: temurin
           java-version: '21'
           cache: 'maven'
+      - name: Make Maven Wrapper executable
+        if: runner.os != 'Windows'
+        run: chmod +x mvnw
       - name: Build and run tests
         run: ./mvnw -B -DskipTests=false clean verify
