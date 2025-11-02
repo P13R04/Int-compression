@@ -5,20 +5,20 @@ Compression d'entiers par bit‑packing avec accès direct aux valeurs (CROSSING
 Build & tests (Windows PowerShell)
 
 ```powershell
-# Optional: set JAVA_HOME for your session
+# Facultatif : définir JAVA_HOME pour la session
 $env:JAVA_HOME = 'C:\Program Files\Java\jdk-21'
 
-# Build and run tests
+# Construire et exécuter les tests
 & "$PWD\mvnw.cmd" -DskipTests=false clean test
 ```
 
 Build & tests (macOS/Linux)
 
 ```bash
-# If this repo was created on Windows, you may need to mark the wrapper as executable once:
+# Si ce dépôt a été créé sous Windows, vous devrez peut-être rendre le wrapper exécutable une fois :
 chmod +x ./mvnw
 
-# Build and run tests
+# Construire et exécuter les tests
 ./mvnw -DskipTests=false clean test
 ```
 
@@ -136,10 +136,10 @@ Exécution en une commande (compile auto) :
 # macOS/Linux
 ./mvnw -q -DskipTests=true compile exec:java@benchcli -Dexec.args="--n 100000 --runs 7"
 
-# text/CSV input; write CSV results and ASCII table files
+# Entrée texte/CSV ; écrit les résultats CSV et un tableau ASCII dans des fichiers
 ./mvnw[.cmd] -q -DskipTests=true compile exec:java@benchcli -Dexec.args="--file data/input.csv --runs 9 --csv data/results.csv --table-out data/results.txt"
 
-# DataIO binary input
+# Entrée binaire DataIO
 ./mvnw[.cmd] -q -DskipTests=true compile exec:java@benchcli -Dexec.args="--file data/input.bin --runs 9"
 ```
 
@@ -202,10 +202,10 @@ Autres exécutions en une commande
 ----------------------
 
 ```powershell
-# Benchmark (argument: N)
+# Benchmark (argument : N)
 ./mvnw[.cmd] -q -DskipTests=true compile exec:java@benchmark -Dexec.args="1000000"
 
-# Save/load roundtrip example using DataIO
+# Exemple de sauvegarde/chargement aller‑retour avec DataIO
 ./mvnw[.cmd] -q -DskipTests=true compile exec:java@saveexample -Dexec.args="data/input-200k.bin data/comp-overflow.bin"
 ```
 
@@ -246,13 +246,13 @@ public final class DataIO {
 Exemples d’utilisation (PowerShell)
 
 ```powershell
-# create a folder for persisted data
+# créer un dossier pour les données persistées
 mkdir data
 
-# run a small demo that writes input and compressed output
-# java -cp target/classes demo.Main  # only if you add file-saving in Main
+# exécuter une petite démo qui écrit l'entrée et la sortie compressée
+# java -cp target/classes demo.Main  # uniquement si vous ajoutez l'enregistrement de fichier dans Main
 
-# Example (after adding DataIO calls in a small helper):
+# Exemple (après avoir ajouté des appels DataIO dans un petit helper) :
 # java -cp target/classes demo.SaveExample data/input-200k.bin data/comp-overflow.bin
 ```
 
