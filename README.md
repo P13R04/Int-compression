@@ -42,6 +42,77 @@ Exécution en une commande (multi‑plateforme via Maven Wrapper) :
 - Entrer un index `i` pour tester `get(i)` (accès direct).
 - Résumé par variante: tailles (base_words, words, ratio, k_eff) et temps (médiane + IQR).
 
+Guide d'exécution rapide (copier-coller)
+---------------------------------------
+
+Démo interactive (choix simple)
+
+```bash
+# macOS/Linux
+./mvnw -q -DskipTests=true compile exec:java@main
+# Quand le terminal affiche "Votre saisie:", tapez par exemple:
+#   random 10000
+# puis Entrée quand l'indice i est proposé (ou tapez un nombre),
+# lisez le récapitulatif, puis appuyez sur Entrée pour quitter.
+```
+
+```powershell
+# Windows (PowerShell)
+./mvnw.cmd -q -DskipTests=true compile exec:java@main
+# Au prompt "Votre saisie:", entrez par exemple:
+#   random 10000
+# puis Entrée quand l'indice i est proposé (ou tapez un nombre),
+# lisez le récapitulatif, puis appuyez sur Entrée pour quitter.
+```
+
+Démo interactive (non‑interactif, exemple automatique)
+
+```bash
+# macOS/Linux: injecte une saisie par défaut (100 valeurs aléatoires) + Entrées
+printf "random 100\n\n\n" | ./mvnw -q -DskipTests=true compile exec:java@main
+```
+
+Bench depuis données générées
+
+```bash
+# macOS/Linux
+./mvnw -q -DskipTests=true compile exec:java@benchcli -Dexec.args="--n 100000 --runs 5"
+```
+
+```powershell
+# Windows (PowerShell)
+./mvnw.cmd -q -DskipTests=true compile exec:java@benchcli -Dexec.args="--n 100000 --runs 5"
+```
+
+Bench depuis un fichier texte rapide
+
+```bash
+# macOS/Linux
+mkdir -p data && echo "1 2 3 4 5 6 7 8 9 10" > data/input.txt
+./mvnw -q -DskipTests=true compile exec:java@benchcli -Dexec.args="--file data/input.txt --runs 3 --csv data/out.csv --table-out data/out.txt"
+# Consultez ensuite data/out.csv et data/out.txt
+```
+
+```powershell
+# Windows (PowerShell)
+mkdir data
+"1 2 3 4 5 6 7 8 9 10" | Out-File -FilePath data/input.txt -Encoding utf8
+./mvnw.cmd -q -DskipTests=true compile exec:java@benchcli -Dexec.args="--file data/input.txt --runs 3 --csv data/out.csv --table-out data/out.txt"
+# Ouvrez data/out.csv et data/out.txt
+```
+
+Micro‑benchmark simple
+
+```bash
+# macOS/Linux (N=500000)
+./mvnw -q -DskipTests=true compile exec:java@benchmark -Dexec.args="500000"
+```
+
+```powershell
+# Windows (PowerShell)
+./mvnw.cmd -q -DskipTests=true compile exec:java@benchmark -Dexec.args="500000"
+```
+
 Notes
 - Les sources sont dans `src/main/java` et les tests dans `src/test/java` (standard Maven).
 - Les artefacts de build sont sous `target/`.
